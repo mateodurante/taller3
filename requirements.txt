@@ -1,0 +1,5 @@
+pygame
+paho-mqtt
+requests
+opencv-python==2.4.9
+numpy

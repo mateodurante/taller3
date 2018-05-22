@@ -2,12 +2,7 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import time
 import datetime
-import json
-import ast
-import requests
 import sys
-import base64
-import hashlib
 
 
 def on_connect(client, userdata, flags, rc):
