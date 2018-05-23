@@ -74,12 +74,38 @@ class Obra:
         elif modo_sonido in ["sonido_alto", "sonido_bajo"]:
             return self.eras[self.era]
     
+    def volumen_en(self, modo_sonido):
+        if modo_sonido in ["ruido_bajo", "sonido_bajo"]:
+            return 30
+        elif modo_sonido in ["sonido_alto", "ruido_alto"]:
+            return 70
+
     def set_parlantes(self, p):
         self.parlantes = p
-        self.mqtt.publish("%s:%s" % (self.parlantes[0],self.sonido_en(self.parlantes[0])), "parlante0")
-        self.mqtt.publish("%s:%s" % (self.parlantes[1],self.sonido_en(self.parlantes[1])), "parlante1")
-        self.mqtt.publish("%s:%s" % (self.parlantes[2],self.sonido_en(self.parlantes[2])), "parlante2")
-        self.mqtt.publish("%s:%s" % (self.parlantes[3],self.sonido_en(self.parlantes[3])), "parlante3")
+        self.mqtt.publish(
+            "%s:%s:%s" % (
+                self.parlantes[0],
+                self.volumen_en(self.parlantes[0]),
+                self.sonido_en(self.parlantes[0])
+            ), "parlante0")
+        self.mqtt.publish(
+            "%s:%s:%s" % (
+                self.parlantes[1],
+                self.volumen_en(self.parlantes[1]),
+                self.sonido_en(self.parlantes[1])
+            ), "parlante1")
+        self.mqtt.publish(
+            "%s:%s:%s" % (
+                self.parlantes[2],
+                self.volumen_en(self.parlantes[2]),
+                self.sonido_en(self.parlantes[2])
+            ), "parlante2")
+        self.mqtt.publish(
+            "%s:%s:%s" % (
+                self.parlantes[3],
+                self.volumen_en(self.parlantes[3]),
+                self.sonido_en(self.parlantes[3])
+            ), "parlante3")
     
     def set_estado_regresion_desde_avance(self):
         self.regresion_perdida_en = -1

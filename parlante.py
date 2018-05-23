@@ -77,25 +77,23 @@ class Parlante:
     def on_message(self, client, userdata, msg):
         # hay un cambio
         print(str(msg.payload))
-        modo, sonido = str(msg.payload).split(':')
-        self.analizar_mensaje(modo, sonido)
+        modo, volumen, sonido = str(msg.payload).split(':')
+        self.analizar_mensaje(modo, sonido, volumen)
 
-    def analizar_mensaje(self, modo, sonido):
+    def analizar_mensaje(self, modo, sonido, volumen):
         self.modo = modo
         self.sonido = sonido
+        self.volumen = int(volumen)
         if modo:
-            if "bajo" in modo:
-                self.set_vol(0.3)
-            elif "alto" in modo:
-                self.set_vol(0.8)
-            self.play(sonido)
+            self.play(sonido, volumen)
 
     def set_vol(self, vol):
         if self.vlc:
             self.vlc.audio_set_volume(int(vol))
 
-    def play(self, sonido):
+    def play(self, sonido, volumen):
         self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
+        self.set_vol(volumen)
         self.vlc.play()
 
 
