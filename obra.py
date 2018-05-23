@@ -36,8 +36,8 @@ class Obra:
 
     def on_message(self, client, userdata, msg):
         # hay un cambio
-        print(str(msg.payload)[2:])
-        camara, estado = str(msg.payload)[2:].split(':')
+        print(str(msg.payload))
+        camara, estado = str(msg.payload).split(':')
         print(camara, type(camara))
         print(estado, type(estado))
         if '0' == estado:

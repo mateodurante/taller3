@@ -22,15 +22,15 @@ class MotionDetectorAdaptative():
     def onChange(self, val): #callback when the user change the detection threshold
         self.threshold = val
 
-    def __init__(self,threshold=25, doRecord=False, showWindows=True):
+    def __init__(self,threshold=25, doRecord=False, showWindows=True, cam_num=0):
         self.writer = None
         self.font = None
-        self.doRecord=doRecord # Either or not record the moving object
-        self.show = showWindows # Either or not show the 2 windows
+        self.doRecord=doRecord #Either or not record the moving object
+        self.show = showWindows #Either or not show the 2 windows
         self.frame = None
-    
+
         self.capture=cv.CaptureFromCAM(0)
-        self.frame = cv.QueryFrame(self.capture) # Take a frame to init recorder
+        self.frame = cv.QueryFrame(self.capture) #Take a frame to init recorder
         if doRecord:
             self.initRecorder()
 

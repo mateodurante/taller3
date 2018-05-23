@@ -1,7 +1,6 @@
 
 #from playsound import playsound
 #playsound('sonidos/big bang.mp3')
-import pygame
 import time
 from mqtt_reducido import MqttClient
 import sys
@@ -16,8 +15,7 @@ class Parlante:
         self.mqtt.client.on_message = self.on_message
         self.mqtt.client.subscribe("parlante"+str(numero))
 
-        self.pygame = pygame
-        self.pygame.init()
+        self.vlc = None
 
         self.modo = None
         self.sonido = None
@@ -39,13 +37,14 @@ class Parlante:
             self.play(sonido)
 
     def set_vol(self, vol):
-        self.pygame.mixer.music.set_volume(vol)
-            
+        self.vlc.mixer.music.set_volume(vol)
+
     def play(self, sonido):
-        self.pygame.mixer.music.load(self.path_sonidos+sonido)
-        self.pygame.mixer.music.play()
+        self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
+        self.vlc.play()
 
 
 if __name__ == "__main__":
-    p = Parlante(sys.argv[1])
+    nro = raw_input('Que parlante sos? Ingresa un numero: ')
+    p = Parlante(nro)
     p.mqtt.client.loop_forever()
