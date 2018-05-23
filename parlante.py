@@ -7,7 +7,7 @@ import paho.mqtt.publish as publish
 import time
 import datetime
 import sys
-
+import vlc
 
 def on_connect(client, userdata, flags, rc):
     print("[+] Running: on_connect")
