@@ -91,7 +91,7 @@ class Parlante:
             self.play(sonido)
 
     def set_vol(self, vol):
-        self.vlc.mixer.music.set_volume(vol)
+        self.vlc.audio_set_volume(vol)
 
     def play(self, sonido):
         self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
