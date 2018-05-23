@@ -81,10 +81,10 @@ class Parlante:
         self.analizar_mensaje(modo, sonido, volumen)
 
     def analizar_mensaje(self, modo, sonido, volumen):
-        self.modo = modo
-        self.sonido = sonido
-        self.volumen = int(volumen)
         if modo:
+            self.modo = modo
+            self.sonido = sonido
+            self.volumen = int(volumen)
             self.play(sonido, volumen)
 
     def set_vol(self, vol):

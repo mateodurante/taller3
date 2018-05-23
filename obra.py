@@ -20,19 +20,16 @@ class Obra:
 
         self.era = -1
         self.eras = [
-            '2da guerra mundial.mp3',
-            'big bang.mp3',
-            'ciudad moderna.mp3',
-            'computadora futurista.mp3',
-            'construccion antigua.mp3',
-            'construccion moderna.mp3',
-            'dinosaurios.mp3',
-            'discurso peron.mp3',
-            'guerra medieval.mp3',
-            'hittler.mp3',
-            'primera civilizacion charla prehistorica.mp3',
+            '1-moderno.mp3',
+            '2-guerra.mp3',
+            '3-revolucion.mp3',
+            '4-medieval.mp3',
+            '5-dino.mp3',
+            '6-bigbang.mp3',
         ]
-        self.glitch = "glitchs varios.mp3"
+        self.sonido_glitch1 = "Gitch.mp3"
+        self.sonido_glitch2 = "Glich 2.mp3"
+        self.sonido_cambio = "Cambio.mp3"
 
     def on_message(self, client, userdata, msg):
         # hay un cambio
