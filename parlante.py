@@ -81,7 +81,7 @@ class Parlante:
         self.analizar_mensaje(comando, modo, sonido, volumen)
     
     def cambiar_era(self):
-        self.play("Glich 2.mp3", 30)
+        self.play("Cambio.mp3", 30)
         time.sleep(3)
         self.stop()
         self.play(self.sonido, self.volumen)
