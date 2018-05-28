@@ -7,7 +7,7 @@ import paho.mqtt.publish as publish
 import time
 import datetime
 import sys
-import vlc
+from vlc import Instance
 
 def on_connect(client, userdata, flags, rc):
     print("[+] Running: on_connect")
@@ -69,7 +69,7 @@ class Parlante:
         self.mqtt.client.on_message = self.on_message
         self.mqtt.client.subscribe("parlante"+str(numero))
 
-        self.vlc = None
+        self.instance = Instance()
 
         self.modo = None
         self.sonido = None
@@ -77,24 +77,45 @@ class Parlante:
     def on_message(self, client, userdata, msg):
         # hay un cambio
         print(str(msg.payload))
-        modo, volumen, sonido = str(msg.payload).split(':')
-        self.analizar_mensaje(modo, sonido, volumen)
+        comando, modo, volumen, sonido = str(msg.payload).split(':')
+        self.analizar_mensaje(comando, modo, sonido, volumen)
+    
+    def cambiar_era(self):
+        self.play("Glich 2.mp3", 30)
+        time.sleep(3)
+        self.stop()
+        self.play(self.sonido, self.volumen)
 
-    def analizar_mensaje(self, modo, sonido, volumen):
-        if modo:
+    def analizar_mensaje(self, comando, modo, sonido, volumen):
+        if comando:
+            self.comando = comando
             self.modo = modo
             self.sonido = sonido
-            self.volumen = int(volumen)
-            self.play(sonido, volumen)
+            self.volumen = volumen
+            if comando == 'set_volume':
+                self.set_vol(volumen)
+            if comando == 'cambio_era':
+                self.cambiar_era()
+            else:
+                self.play(sonido, volumen)
 
     def set_vol(self, vol):
-        if self.vlc:
-            self.vlc.audio_set_volume(int(vol))
+        if self.instance:
+            #self.vlc.audio_set_volume(int(vol))
+            self.mediaplayer.audio_set_volume(50)
+
+    def stop(self):
+        self.mediaplayer.stop()
 
     def play(self, sonido, volumen):
-        self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
+        #if self.vlc:
+        #    self.player.stop()
+        #self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
+        self.mediaplayer = self.instance.media_player_new()
+        self.media = self.instance.media_new(self.path_sonidos+sonido)
+        self.mediaplayer.set_media(self.media)
         self.set_vol(volumen)
-        self.vlc.play()
+        self.mediaplayer.play()
 
 
 if __name__ == "__main__":

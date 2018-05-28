@@ -58,16 +58,16 @@ class Obra:
             self.do_rotacion()
 
     def do_rotacion(self):
-        self.set_parlantes(self.parlantes[1:]+self.parlantes[:1])
+        self.set_parlantes(self.parlantes[1:]+self.parlantes[:1], comando="cambio_era")
     
     def set_estado_regresion_desde_inicial(self):
         self.era = 0
         self.estado = "regresion"
-        self.set_parlantes(["ruido_bajo","sonido_bajo","sonido_alto","ruido_alto"])
+        self.set_parlantes(["ruido_bajo","sonido_bajo","sonido_alto","ruido_alto"], comando="cambio_era")
 
     def sonido_en(self, modo_sonido):
         if modo_sonido in ["ruido_bajo", "ruido_alto"]:
-            return self.glitch
+            return self.sonido_glitch1
         elif modo_sonido in ["sonido_alto", "sonido_bajo"]:
             return self.eras[self.era]
     
@@ -77,32 +77,16 @@ class Obra:
         elif modo_sonido in ["sonido_alto", "ruido_alto"]:
             return 70
 
-    def set_parlantes(self, p):
+    def set_parlantes(self, p, comando=""):
         self.parlantes = p
-        self.mqtt.publish(
-            "%s:%s:%s" % (
-                self.parlantes[0],
-                self.volumen_en(self.parlantes[0]),
-                self.sonido_en(self.parlantes[0])
-            ), "parlante0")
-        self.mqtt.publish(
-            "%s:%s:%s" % (
-                self.parlantes[1],
-                self.volumen_en(self.parlantes[1]),
-                self.sonido_en(self.parlantes[1])
-            ), "parlante1")
-        self.mqtt.publish(
-            "%s:%s:%s" % (
-                self.parlantes[2],
-                self.volumen_en(self.parlantes[2]),
-                self.sonido_en(self.parlantes[2])
-            ), "parlante2")
-        self.mqtt.publish(
-            "%s:%s:%s" % (
-                self.parlantes[3],
-                self.volumen_en(self.parlantes[3]),
-                self.sonido_en(self.parlantes[3])
-            ), "parlante3")
+        for i in range(0,4):
+            self.mqtt.publish(
+                "%s:%s:%s:%s" % (
+                    comando,
+                    self.parlantes[i],
+                    self.volumen_en(self.parlantes[i]),
+                    self.sonido_en(self.parlantes[i])
+                ), "parlante%d" % i)
     
     def set_estado_regresion_desde_avance(self):
         self.regresion_perdida_en = -1
