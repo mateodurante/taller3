@@ -27,8 +27,8 @@ class Obra:
             '5-dino.mp3',
             '6-bigbang.mp3',
         ]
-        self.sonido_glitch1 = "Gitch.mp3"
-        self.sonido_glitch2 = "Glich 2.mp3"
+        self.sonido_glitch1 = "Glitch.mp3"
+        self.sonido_glitch2 = "Glitch 2.mp3"
         self.sonido_cambio = "Cambio.mp3"
 
     def on_message(self, client, userdata, msg):

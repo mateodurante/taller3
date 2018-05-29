@@ -124,8 +124,11 @@ if __name__ == "__main__":
     if os.path.exists(config_file):
         f = open(config_file,"r")
         ip, nro = f.read().split(' ')
+        parlante = str(int(nro))
+        print("usando ip",ip)
+        print("soy parlante", int(parlante))
     else:
         ip = raw_input('Que IP es el servidor? Ingresa la IP: ')
-        nro = raw_input('Que parlante sos? Ingresa un numero: ')
-    p = Parlante(nro, MqttClient(ip))
+        parlante = raw_input('Que parlante sos? Ingresa un numero: ')
+    p = Parlante(parlante, MqttClient(ip))
     p.mqtt.client.loop_forever()
