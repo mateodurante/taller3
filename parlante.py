@@ -8,6 +8,7 @@ import time
 import datetime
 import sys
 from vlc import Instance
+import os
 
 def on_connect(client, userdata, flags, rc):
     print("[+] Running: on_connect")
@@ -119,7 +120,12 @@ class Parlante:
 
 
 if __name__ == "__main__":
-    ip = raw_input('Que IP es el servidor? Ingresa la IP: ')
-    nro = raw_input('Que parlante sos? Ingresa un numero: ')
+    config_file = 'config.txt'
+    if os.path.exists(config_file):
+        f = open(config_file,"r")
+        ip, nro = f.read().split(' ')
+    else:
+        ip = raw_input('Que IP es el servidor? Ingresa la IP: ')
+        nro = raw_input('Que parlante sos? Ingresa un numero: ')
     p = Parlante(nro, MqttClient(ip))
     p.mqtt.client.loop_forever()
