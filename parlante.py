@@ -68,9 +68,11 @@ class Parlante:
 
         self.mqtt = mqtt
         self.mqtt.client.on_message = self.on_message
-        self.mqtt.client.subscribe("parlante"+str(numero))
+        self.mqtt.client.subscribe("parlante"+str(numero), qos=1)
 
         self.instance = Instance()
+        self.mediaplayer = None
+        self.media = None
 
         self.modo = None
         self.sonido = None
@@ -109,8 +111,8 @@ class Parlante:
         self.mediaplayer.stop()
 
     def play(self, sonido, volumen):
-        #if self.vlc:
-        #    self.player.stop()
+        if self.mediaplayer:
+            self.mediaplayer.stop()
         #self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
         self.mediaplayer = self.instance.media_player_new()
         self.media = self.instance.media_new(self.path_sonidos+sonido)

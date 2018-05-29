@@ -50,7 +50,7 @@ class MqttClient(object):
 
     def publish(self, message, topic):
          #print("Sending %s " % (message))
-         publish.single(str(topic), message, hostname="localhost")
+         publish.single(str(topic), message, hostname="localhost", qos=1)
          return "Sending msg: %s " % (message)
 
 # if __name__ == "__main__":
