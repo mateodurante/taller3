@@ -30,6 +30,7 @@ class Obra:
         self.sonido_glitch1 = "Glitch.mp3"
         self.sonido_glitch2 = "Glitch 2.mp3"
         self.sonido_cambio = "Cambio.mp3"
+        self.sonido_inicial = "1er sonido contemporaneo.mp3"
         
 
     def on_message(self, client, userdata, msg):
@@ -43,12 +44,17 @@ class Obra:
             pass
         elif '1' == estado:
             self.mov_en(int(camara))
-        elif 'reset' == camara:
+        elif 'off' == camara:
             self.__init__()
+        elif 'reset' == camara:
+            self.inicial()
         print(camara, estado)
 
         self.mostrar_estados()
-            
+
+    def inicial(self):
+        self.set_parlantes(["inicial","inicial","inicial","inicial"], comando="loop")
+    
     def mov_en(self, nro_cam):
         if self.usuario_en != nro_cam:
             self.usuario_viene_de = self.usuario_en
@@ -73,6 +79,8 @@ class Obra:
             return self.sonido_glitch1
         elif modo_sonido in ["sonido_alto", "sonido_bajo"]:
             return self.eras[self.era]
+        elif modo_sonido in ["inicial"]:
+            return self.sonido_inicial
     
     def volumen_en(self, modo_sonido):
         if modo_sonido in ["ruido_bajo", "sonido_bajo"]:

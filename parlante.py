@@ -101,6 +101,8 @@ class Parlante:
                 self.cambiar_era()
             elif comando == 'reset':
                 self.stop()
+            elif comando == 'loop':
+                self.play(self.sonido, self.volumen, loop=True)
 
     def set_vol(self, vol):
         if self.mediaplayer:
@@ -111,7 +113,7 @@ class Parlante:
         if self.mediaplayer:
             self.mediaplayer.stop()
 
-    def play(self, sonido, volumen):
+    def play(self, sonido, volumen, loop=False): # HACER LOOP
         if self.mediaplayer:
             self.mediaplayer.stop()
         #self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
