@@ -30,6 +30,7 @@ class Obra:
         self.sonido_glitch1 = "Glitch.mp3"
         self.sonido_glitch2 = "Glitch 2.mp3"
         self.sonido_cambio = "Cambio.mp3"
+        
 
     def on_message(self, client, userdata, msg):
         # hay un cambio
@@ -40,8 +41,10 @@ class Obra:
         if '0' == estado:
             # es estado apagado
             pass
-        else:
+        elif '1' == estado:
             self.mov_en(int(camara))
+        elif 'reset' == camara:
+            self.__init__()
         print(camara, estado)
 
         self.mostrar_estados()
@@ -77,7 +80,7 @@ class Obra:
         elif modo_sonido in ["sonido_alto", "ruido_alto"]:
             return 70
 
-    def set_parlantes(self, p, comando=""):
+    def set_parlantes(self, p, comando="reset"):
         self.parlantes = p
         for i in range(0,4):
             self.mqtt.publish(
@@ -105,12 +108,16 @@ class Obra:
                 self.regresion_perdida_en = self.usuario_viene_de
                 self.estado = "avance"
         elif self.estado == "avance":
-            if self.usuario_en == self.regresion_perdida_en:
-                self.set_estado_regresion_desde_avance()
+            #if self.usuario_en == self.regresion_perdida_en:
+            #    self.set_estado_regresion_desde_avance()
+            if self.usuario_en == (self.regresion_perdida_en + 1)%4:
+                self.estado = "regresion"
+                self.set_siguiente_era()
             #else:
             #    self.potenciar_avance()
     
     def mostrar_estados(self):
+        self.mqtt.publish("%s\n%s, %s, %s" % (self.estado, self.usuario_en, self.usuario_viene_de, self.regresion_perdida_en), "estado")
         print("estado:",self.estado)
         print("usuario_en:",self.usuario_en)
         print("usuasrio_viene_de:",self.usuario_viene_de)

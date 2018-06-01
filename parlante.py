@@ -97,18 +97,19 @@ class Parlante:
             self.volumen = volumen
             if comando == 'set_volume':
                 self.set_vol(volumen)
-            if comando == 'cambio_era':
+            elif comando == 'cambio_era':
                 self.cambiar_era()
-            else:
-                self.play(sonido, volumen)
+            elif comando == 'reset':
+                self.stop()
 
     def set_vol(self, vol):
-        if self.instance:
+        if self.mediaplayer:
             #self.vlc.audio_set_volume(int(vol))
             self.mediaplayer.audio_set_volume(50)
 
     def stop(self):
-        self.mediaplayer.stop()
+        if self.mediaplayer:
+            self.mediaplayer.stop()
 
     def play(self, sonido, volumen):
         if self.mediaplayer:
