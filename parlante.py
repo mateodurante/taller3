@@ -66,6 +66,8 @@ class Parlante:
         self.path_sonidos = 'sonidos/'
         self.sonidos = [""]
 
+        self.numero = numero
+
         self.mqtt = mqtt
         self.mqtt.client.on_message = self.on_message
         self.mqtt.client.subscribe("parlante"+str(numero), qos=1)
@@ -87,7 +89,7 @@ class Parlante:
         self.play("Cambio.mp3", 30)
         time.sleep(3)
         self.stop()
-        self.play(self.sonido, self.volumen)
+        self.play(self.sonido, self.volumen, loop=True)
 
     def analizar_mensaje(self, comando, modo, sonido, volumen):
         if comando:
@@ -101,6 +103,14 @@ class Parlante:
                 self.cambiar_era()
             elif comando == 'reset':
                 self.stop()
+                self.__init__(self.numero, self.mqtt)
+                self.estado_inicial()
+            elif comando == 'loop' and modo == 'inicial':
+                self.stop()
+                self.__init__(self.numero, self.mqtt)
+                self.estado_inicial()
+            elif comando == 'stop':
+                self.stop()
             elif comando == 'loop':
                 self.play(self.sonido, self.volumen, loop=True)
 
@@ -113,10 +123,17 @@ class Parlante:
         if self.mediaplayer:
             self.mediaplayer.stop()
 
+    def estado_inicial(self):
+        self.play("Glitch.mp3", 100, loop=True)
+
     def play(self, sonido, volumen, loop=False): # HACER LOOP
         if self.mediaplayer:
             self.mediaplayer.stop()
         #self.vlc = vlc.MediaPlayer(self.path_sonidos+sonido)
+        if loop:
+            self.instance = Instance('--input-repeat=999999')
+        else:
+            self.instance = Instance()
         self.mediaplayer = self.instance.media_player_new()
         self.media = self.instance.media_new(self.path_sonidos+sonido)
         self.mediaplayer.set_media(self.media)
